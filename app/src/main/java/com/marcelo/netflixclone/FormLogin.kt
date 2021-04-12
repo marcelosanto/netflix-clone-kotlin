@@ -4,7 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.marcelo.netflixclone.databinding.ActivityFormLoginBinding
 
 class FormLogin : AppCompatActivity() {
@@ -47,7 +49,15 @@ class FormLogin : AppCompatActivity() {
                 IrParaTelaDeFilmes()
             }
         }.addOnFailureListener {
-            mensagem.setText("Erro ao logar usuário")
+
+            var erro = it
+
+            when {
+                erro is FirebaseAuthInvalidCredentialsException -> mensagem.setText("E-mail e Senha estão incorretos")
+                erro is FirebaseNetworkException -> mensagem.setText("Sem conexão com a internet!")
+                else -> mensagem.setText("Erro desconhecido")
+            }
+
         }
 
     }
