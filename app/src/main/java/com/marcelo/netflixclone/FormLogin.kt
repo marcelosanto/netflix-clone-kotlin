@@ -18,6 +18,7 @@ class FormLogin : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar!!.hide()
+        VerificarUsuarioLogado()
 
         binding.txtTelaCadastro.setOnClickListener {
             val intent = Intent(this, FormCadastro::class.java)
@@ -60,6 +61,14 @@ class FormLogin : AppCompatActivity() {
 
         }
 
+    }
+
+    private fun VerificarUsuarioLogado() {
+        var usuarioLogado = FirebaseAuth.getInstance().currentUser
+
+        if (usuarioLogado != null) {
+            IrParaTelaDeFilmes()
+        }
     }
 
     private fun IrParaTelaDeFilmes(){
