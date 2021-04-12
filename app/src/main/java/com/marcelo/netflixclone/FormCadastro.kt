@@ -3,7 +3,10 @@ package com.marcelo.netflixclone
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.marcelo.netflixclone.databinding.ActivityFormCadastroBinding
 
 class FormCadastro : AppCompatActivity() {
@@ -31,9 +34,9 @@ class FormCadastro : AppCompatActivity() {
     }
 
     private  fun CadastrarUsuario(){
-        var email = binding.editCadastroEmail.text.toString()
-        var senha = binding.editCadastroSenha.text.toString()
-        var mensagem = binding.mensagemErroCadastro
+        val email = binding.editCadastroEmail.text.toString()
+        val senha = binding.editCadastroSenha.text.toString()
+        val mensagem = binding.mensagemErroCadastro
 
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, senha).addOnCompleteListener {
             if(it.isSuccessful){
@@ -43,7 +46,17 @@ class FormCadastro : AppCompatActivity() {
                 binding.mensagemErroCadastro.setText("")
             }
         }.addOnFailureListener {
-            mensagem.setText("Erro ao cadastrar usuário.")
+
+            var erro = it
+
+            when{
+                erro is FirebaseAuthWeakPasswordException -> mensagem.setText("Senha precisa ter no minimo 6 caracteres.")
+                erro is FirebaseAuthUserCollisionException -> mensagem.setText("Email ja cadastrado.")
+                erro is FirebaseNetworkException -> mensagem.setText("Não conectado a internet.")
+                else -> mensagem.setText("Erro ao cadastrar usuário.")
+            }
+
+
         }
     }
 
