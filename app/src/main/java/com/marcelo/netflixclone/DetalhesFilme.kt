@@ -27,6 +27,12 @@ class DetalhesFilme : AppCompatActivity() {
 
         val capaTheWitcher = "https://firebasestorage.googleapis.com/v0/b/netflix-clone-c5ff9.appspot.com/o/video.jpg?alt=media&token=940da3e1-2b94-4729-a402-071f5c01f0eb"
         Picasso.get().load(capaTheWitcher).fit().into(binding.capaDetalhe)
+
+        binding.playVideo.setOnClickListener {
+            val intent = Intent(this, Video::class.java)
+            startActivity(intent)
+        }
+
     }
 
     private  fun Toolbar() {
