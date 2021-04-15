@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.GridLayout
+import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.marcelo.netflixclone.databinding.ActivityListaFilmesBinding
 import java.util.zip.Inflater
@@ -17,6 +19,9 @@ class ListaFilmes : AppCompatActivity() {
         binding = ActivityListaFilmesBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val recycler_filmes = binding.recyclerview
+        recycler_filmes.adapter = FilmesAdapter()
+        recycler_filmes.layoutManager = GridLayoutManager(applicationContext, 3)
 
     }
 
